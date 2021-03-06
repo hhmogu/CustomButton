@@ -37,64 +37,11 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
+$event_function_list = [];
+$event_function_list['InformationCheck'] = '信息校验';
 
-
-class cgl_FunctionButton extends Basic
-{
-    public $new_schema = true;
-    public $module_dir = 'cgl_FunctionButton';
-    public $object_name = 'cgl_FunctionButton';
-    public $table_name = 'cgl_functionbutton';
-    public $importable = false;
-
-    public $id;
-    public $name;
-    public $date_entered;
-    public $date_modified;
-    public $modified_user_id;
-    public $modified_by_name;
-    public $created_by;
-    public $created_by_name;
-    public $description;
-    public $deleted;
-    public $created_by_link;
-    public $modified_user_link;
-    public $assigned_user_id;
-    public $assigned_user_name;
-    public $assigned_user_link;
-    public $SecurityGroups;
-    public $css_theme;
-    public $label_zh;
-    public $label_en;
-    public $response_event;
-    public $show_view;
-    public $show_module;
-
-    public function __construct($init = true)
-    {
-        parent::__construct();
-        if ($init) {
-            $this->load_function_event_list();
-        }
-    }
-
-    public function bean_implements($interface)
-    {
-        switch($interface)
-        {
-            case 'ACL':
-                return true;
-        }
-
-        return false;
-    }
-
-    public function load_function_event_list(){
-        global $beanList, $app_list_strings;
-
-        include_once('modules/cgl_FunctionButton/functions.php');
-        //获取事件响应函数集合   
-        $app_list_strings['event_function_list'] = $event_function_list;  
-    }
-    
+if (file_exists('custom/modules/cgl_FunctionButton/functions.php')) {
+    require('custom/modules/cgl_FunctionButton/functions.php');
 }
+//在custom/Extension/application...下进行扩展
+

@@ -63,11 +63,19 @@ class cgl_AssignmentButton extends Basic
     public $assigned_user_name;
     public $assigned_user_link;
     public $SecurityGroups;
-    public $show_module;
+    public $flow_module;
     public $show_view;
     public $cgl_functionbutton_id_c;
     public $button;
-	
+
+    public function __construct($init = true)
+    {
+        parent::__construct();
+        if ($init) {
+            $this->load_module_list();
+        }
+    }
+
     public function bean_implements($interface)
     {
         switch($interface)
@@ -78,5 +86,77 @@ class cgl_AssignmentButton extends Basic
 
         return false;
     }
-	
-}
+
+    /*
+    public function retrieve($id = -1, $encode = true, $deleted = true){
+        parent::retrieve($id,$encode,$deleted);
+        $this->flow_module = $this->show_module;
+    }
+    */
+    public function save($check_notify = false)
+    {
+        if (empty($this->id) || (isset($_POST['duplicateSave']) && $_POST['duplicateSave'] == 'true')) {
+            unset($_POST['aow_conditions_id']);
+            unset($_POST['aow_actions_id']);
+        }
+
+        $return_id = parent::save($check_notify);
+
+        require_once('modules/AOW_Conditions/AOW_Condition.php');
+        $condition = BeanFactory::newBean('AOW_Conditions');
+        $condition->save_lines($_POST, $this, 'aow_conditions_');
+        //将按钮加到ACLActions中
+        $this->addActions($this->functionbutton,$this->flow_module);
+
+        return $return_id;
+    }
+
+    /**
+    * static addActions($category, $type='module')
+    * Adds all default actions for a category/type
+    *
+    * @param STRING $category - the category (e.g module name - Accounts, Contacts)
+    * @param STRING $type - the type (e.g. 'module', 'field')
+    */
+    public function addActions($action_name,$category, $type='module'){
+        global $ACLActions;
+        $db = DBManagerFactory::getInstance();
+
+        $action = new ACLAction();
+        $query = "SELECT * FROM " . $action->table_name . " WHERE name='$action_name' AND category = '$category' AND acltype='$type' AND deleted=0 ";
+        $result = $db->query($query);
+        //only add if an action with that name and category don't exist
+        $row=$db->fetchByAssoc($result);
+        if ($row == null) {
+            $action->name = strtolower($action_name);
+            $action->category = $category;
+            $action->aclaccess = 90;
+            $action->acltype = $type;
+            $action->modified_user_id = 1;
+            $action->created_by = 1;
+            $action->save();
+
+        }
+
+    }
+
+
+    public function load_module_list()
+    {
+        global $beanList, $app_list_strings;
+
+        if (!empty($app_list_strings['moduleList'])) {
+            $app_list_strings['show_module_list'] = $app_list_strings['moduleList'];
+            foreach ($app_list_strings['show_module_list'] as $mkey => $mvalue) {
+                if (!isset($beanList[$mkey]) || str_begin($mkey, 'AOW_')) {
+                    unset($app_list_strings['show_module_list'][$mkey]);
+                }
+            }
+        }
+
+        $app_list_strings['show_module_list'] = array_merge((array)array(''=>''), (array)$app_list_strings['show_module_list']);
+
+        asort($app_list_strings['show_module_list']);
+    }
+    
+}

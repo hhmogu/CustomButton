@@ -78,4 +78,5 @@ $mod_strings = array (
   'LBL_SHOW_VIEW' => 'show view',
   'LBL_BUTTON_CGL_FUNCTIONBUTTON_ID' => '按钮 (related  ID)',
   'LBL_BUTTON' => '按钮',
+  'LBL_FLOW_MODULE' => '模块',
 );
