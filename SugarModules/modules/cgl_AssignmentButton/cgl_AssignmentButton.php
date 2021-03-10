@@ -138,6 +138,22 @@ class cgl_AssignmentButton extends Basic
 
         }
 
+        //由于权限配置页标签显示是根据客户维度来的，因此按钮在客户维度要默认添加
+        $query = "SELECT * FROM " . $action->table_name . " WHERE name='$action_name' AND category = 'Accounts' AND acltype='$type' AND deleted=0 ";
+        $result = $db->query($query);
+        //only add if an action with that name and category don't exist
+        $row=$db->fetchByAssoc($result);
+        if ($row == null) {
+            $action->name = strtolower($action_name);
+            $action->category = 'Accounts';
+            $action->aclaccess = 90;
+            $action->acltype = $type;
+            $action->modified_user_id = 1;
+            $action->created_by = 1;
+            $action->save();
+
+        }
+
     }
 
 
