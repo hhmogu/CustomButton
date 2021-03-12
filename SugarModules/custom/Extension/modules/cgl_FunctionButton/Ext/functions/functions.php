@@ -1,4 +1,3 @@
-ButtonInformationCheck.php
 <?php
 /**
  *
@@ -37,35 +36,6 @@ ButtonInformationCheck.php
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- *
- * This file was contributed by diligent technology & business consulting GmbH <info@dtbc.eu>
- *
  */
+$event_function_list['InformationCheck'] = '信息校验';
 
-require_once('modules/cgl_FunctionButton/functions/buttonBase.php');
-
-/**
- * Class buttonInformationCheck
- */
-class buttonInformationCheck extends butonBase
-{
-    /**
-     * @return array
-     */
-    public function loadJS()
-    {
-        return array('modules/cgl_FunctionButton/functions/buttonInformationCheck.js');
-    }
-
-    /**
-     * @param SugarBean $bean
-     * @param array $params
-     * @param bool $in_save
-     *
-     * @return bool|void
-     */
-    public function run_function(SugarBean $bean, $params = array(), $in_save = false)
-    {
-    	
-    }
-}

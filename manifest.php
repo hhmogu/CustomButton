@@ -65,7 +65,7 @@ $manifest = array (
   'name' => 'FunctionButton',
   'published_date' => '2021-02-25 02:22:42',
   'type' => 'module',
-  'version' => 1614219762,
+  'version' => '0.0.2',
   'remove_tables' => 'prompt',
 );
 
@@ -107,6 +107,21 @@ $installdefs = array (
     array (
       'from' => '<basepath>/SugarModules/modules/cgl_FunctionButton',
       'to' => 'modules/cgl_FunctionButton',
+    ),
+    2 => 
+    array (
+      'from' => '<basepath>/SugarModules/custom/Extension/modules/cgl_FunctionButton',
+      'to' => 'custom/Extension/modules/cgl_FunctionButton',
+    ),
+    3 => 
+    array (
+      'from' => '<basepath>/SugarModules/custom/include/MVC',
+      'to' => 'custom/include/MVC',
+    ),
+    4 => 
+    array (
+      'from' => '<basepath>/SugarModules/custom/include/Smarty',
+      'to' => 'custom/include/Smarty',
     ),
   ),
   'language' => 
